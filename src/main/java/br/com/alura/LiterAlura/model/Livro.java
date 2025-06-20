@@ -1,0 +1,46 @@
+package br.com.alura.LiterAlura.model;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
+public class Livro {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @JsonAlias("title")
+    private String titulo;
+
+    @JsonAlias("authors")
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Autor> autores;
+
+    @JsonAlias("languages")
+    @ElementCollection
+    private List<String> linguagens;
+
+    public Livro() {
+    }
+
+    // Construtor para facilitar a conversão do DTO para Entity
+    public Livro(String titulo, List<Autor> autores, List<String> linguagens) {
+        this.titulo = titulo;
+        this.autores = autores;
+        this.linguagens = linguagens;
+    }
+
+    // getters e setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
+    public List<Autor> getAutores() { return autores; }
+    public void setAutores(List<Autor> autores) { this.autores = autores; }
+    public List<String> getLinguagens() { return linguagens; }
+    public void setLinguagens(List<String> linguagens) { this.linguagens = linguagens; }
+}
